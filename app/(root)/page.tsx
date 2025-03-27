@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
 
@@ -31,18 +30,23 @@ async function Home() {
 
   return (
     <>
-      <section className="card-cta">
+      <section className="card-cta flex items-center justify-between">
         <div className="flex flex-col gap-6 max-w-lg">
+          <div className="flex items-center text-2xl font-medium">
+            <p className="text-white mr-2">Welcome</p>
+            <span className="bg-gradient-to-r from-[#B78AF7] to-[#FF8080] bg-clip-text text-transparent text-3xl">
+              {user.name}!
+            </span>
+          </div>
+
           <h2>Get Interview-Ready with AI-Powered Practice & Feedback</h2>
           <p className="text-lg">
             Practice real interview questions & get instant feedback
           </p>
-
           <Button asChild className="btn-primary max-sm:w-full">
             <Link href="/interview">Start an Interview</Link>
           </Button>
         </div>
-
         <Image
           src="/robot.png"
           alt="robo-dude"
@@ -54,10 +58,9 @@ async function Home() {
 
       <section className="flex flex-col gap-6 mt-8">
         <h2>Your Interviews</h2>
-
         <div className="interviews-section">
           {hasPastInterviews ? (
-            userInterviews?.map((interview) => (
+            userInterviews.map((interview) => (
               <InterviewCard
                 key={interview.id}
                 userId={user.id}
@@ -76,10 +79,9 @@ async function Home() {
 
       <section className="flex flex-col gap-6 mt-8">
         <h2>Take Interviews</h2>
-
         <div className="interviews-section">
           {hasUpcomingInterviews ? (
-            allInterview?.map((interview) => (
+            allInterview.map((interview) => (
               <InterviewCard
                 key={interview.id}
                 userId={user.id}
