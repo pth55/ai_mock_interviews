@@ -256,6 +256,14 @@
       @apply flex w-full justify-evenly gap-4 max-sm:flex-col max-sm:items-center;
     }
   }
+  /* Example: Override any element that uses OKLCH with a fallback */
+  .pdf-fallback,
+  .pdf-fallback * {
+    /* Replace these with your equivalent fallback colors */
+    color: #333 !important;
+    background-color: #fff !important;
+    border-color: #ccc !important;
+  }
 
   .auth-layout {
     @apply flex items-center justify-center mx-auto max-w-7xl min-h-screen max-sm:px-4 max-sm:py-8;

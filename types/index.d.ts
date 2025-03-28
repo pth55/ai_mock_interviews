@@ -41,6 +41,8 @@ interface User {
 interface InterviewCardProps {
   interviewId?: string;
   userId?: string;
+  userName?: string;
+  userEmail?: string;
   role: string;
   type: string;
   techstack: string[];

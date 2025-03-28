@@ -3,8 +3,8 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import LogoutButton from "@/components/LogoutButton";
+import WalletConnectButton from "@/components/WalletConnectButton";
 import { isAuthenticated } from "@/lib/actions/auth.action";
-// import { Button } from "@/components/ui/button";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
@@ -30,6 +30,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           >
             Roadmap Generator
           </Link>
+          <WalletConnectButton />
           <LogoutButton />
         </div>
       </nav>
