@@ -25,7 +25,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
             Resume Builder
           </Link>
           <Link
-            href="/roadmap-generator"
+            href="https://roadmap-mancer.lovable.app/"
             className="text-[#CAC5FE] transition-colors hover:underline"
           >
             Roadmap Generator
