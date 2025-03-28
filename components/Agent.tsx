@@ -34,23 +34,27 @@ const Agent = ({
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>("");
+  // New state to track whether the camera is on
+  const [cameraOn, setCameraOn] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Initialize webcam for user profile card
+  // Initialize webcam for user profile card (runs on mount only if cameraOn is true)
   useEffect(() => {
-    async function initWebcam() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+    if (cameraOn) {
+      async function initWebcam() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (err) {
+          console.error("Failed to access webcam:", err);
         }
-      } catch (err) {
-        console.error("Failed to access webcam:", err);
       }
+      initWebcam();
     }
-    initWebcam();
 
     // Cleanup: stop webcam when component unmounts
     return () => {
@@ -59,7 +63,33 @@ const Agent = ({
         tracks.forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [cameraOn]);
+
+  // Toggle camera on/off
+  const toggleCamera = async () => {
+    if (cameraOn) {
+      // Turn off: stop all tracks and remove the stream
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setCameraOn(false);
+    } else {
+      // Turn on: reinitialize the webcam
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+        setCameraOn(true);
+      } catch (err) {
+        console.error("Failed to turn on webcam:", err);
+      }
+    }
+  };
 
   useEffect(() => {
     const onCallStart = () => {
@@ -201,6 +231,13 @@ const Agent = ({
           <div className="absolute bottom-2 left-2 bg-black/60 text-white text-sm font-medium px-3 py-1 rounded">
             {userName.toUpperCase()}
           </div>
+          {/* Toggle Camera Button */}
+          <button
+            onClick={toggleCamera}
+            className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded hover:bg-gray-700"
+          >
+            {cameraOn ? "Camera Off" : "Camera On"}
+          </button>
         </div>
       </div>
 
